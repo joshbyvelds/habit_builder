@@ -53,4 +53,6 @@ fabric.properties
 
 .gitignore
 .idea/
-vender/
+vendor/
+vendor/autoload.php
+/production/cache/
