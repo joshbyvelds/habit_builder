@@ -10,25 +10,28 @@
     <form id="install_form">
         <label for="db_user">Database Username</label>
         <input type="text" name="db_user">
+        <div class="errorbox" id="sql_user_error">This is a error</div>
         <br />
         <label for="db_pass">Database Password</label>
         <input type="password" name="db_pass">
+        <div class="errorbox" id="sql_password_error">This is a error</div>
         <br />
         <label for="db_name">Database Name</label>
         <input type="text" name="db_name">
+        <div class="errorbox" id="sql_database_error">This is a error</div>
         <br />
-        <div class="form_switch">
-            <div class="label">Database Already Created</div>
-            <input type="checkbox" name="db_created">
-        </div>
+        <label for="db_created">Database Already Exists?</label>
+        <input type="checkbox" name="db_created">
         <br />
         <label for="admin_user">Admin User Username</label>
         <input type="text" name="admin_user">
+        <div class="errorbox" id="admin_username_error">This is a error</div>
         <br />
         <label for="admin_pass">Admin User Password</label>
         <input type="password" name="admin_pass">
+        <div class="errorbox" id="admin_password_error">This is a error</div>
 
-        <div class="errorbox">This is a error</div>
+
 
         <button type="submit" id="install_submit_btn">Install</button>
     </form>

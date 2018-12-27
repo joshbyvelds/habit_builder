@@ -51,6 +51,7 @@ footer {
   text-align: center; }
 
 .errorbox {
+  display: none;
   padding: 10px;
   color: red; }
 
