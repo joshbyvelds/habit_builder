@@ -56,3 +56,5 @@ fabric.properties
 vendor/
 vendor/autoload.php
 /production/cache/
+/production/php/db.inc.php
+

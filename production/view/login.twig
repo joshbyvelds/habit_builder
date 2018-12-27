@@ -10,10 +10,13 @@
     <form id="login_form">
         <label for="username">Username:</label>
         <input type="text" name="username">
-        <br>
+        <div class="errorbox" id="username_error">This is a error</div>
+        <br />
         <label for="password">Password:</label>
         <input type="password" name="password">
-        <br>
+        <div class="errorbox" id="password_error">This is a error</div>
+        <br />
+        <div class="errorbox" id="db_error">This is a error</div>
         <button type="submit">Login</button>
     </form>
 {% endblock %}

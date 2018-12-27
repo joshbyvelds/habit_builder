@@ -1,5 +1,25 @@
 (function($){
 
+    // Login functions
+
+    function setupLogin(){
+        $( "#login_form" ).submit(function( event ) {
+            event.preventDefault();
+            $('.errorbox').hide();
+            $.post("php/login.php", $( this ).serialize(), function(json_return){
+                json_return = JSON.parse(json_return);
+
+                if(json_return.error){
+                    if(json_return.username_error){$("#username_error").html(json_return.username_error).slideDown();}
+                    if(json_return.password_error){$("#password_error").html(json_return.password_error).slideDown();}
+                    if(json_return.db_error){$("#db_error").html(json_return.db_error).slideDown();}
+                }else{
+                    window.location.reload();
+                }
+            });
+        });
+    }
+
     // DB Install functions..
     function setupDBInstall(){
         $( "#install_form" ).submit(function( event ) {
@@ -24,6 +44,7 @@
 
     function init(){
         setupDBInstall();
+        setupLogin();
     }
 
     $(document).ready(init);
