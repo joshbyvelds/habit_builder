@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="master.css" />
+        <script src="jquery.min.js"></script>
+        <script src="master.min.js"></script>
+    {% endblock %}
+</head>
+<body>
+    <header>{% block header %}{% endblock %}</header>
+    <main>{% block main %}{% endblock %}</main>
+    <footer>
+        {% block footer %}
+            &copy; Copyright 2019 by <a href="//www.byveldsmultimedia.com">Byvelds Multimedia</a>.
+        {% endblock %}
+    </footer>
+</body>
+</html>

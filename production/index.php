@@ -5,7 +5,8 @@ require_once '../vendor/autoload.php';
 
 // Setup twig template engine..
 $loader = new Twig_Loader_Filesystem('view/');
-$twig = new Twig_Environment($loader, array('cache' => 'cache/'));
+$twig = new Twig_Environment($loader);
+//$twig = new Twig_Environment($loader, array('cache' => 'cache/'));
 
 // Page Variables
 $site_name = "Habit Builder";
