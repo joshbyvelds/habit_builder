@@ -19,6 +19,25 @@ if(!file_exists ( 'php/db.inc.php' )) {
     exit();
 }
 
+// If Logout page..
+session_start();
+if(isset($_GET["page"]) && $_GET["page"] === "logout"){
+    session_unset();
+    session_destroy();
+    session_write_close();
+    setcookie(session_name(),'',0,'/');
+}
+
+// Check if user is logged in..
+
+if(isset($_SESSION['username'])){
+
+}else{
+    $page_name = 'Login';
+    echo $twig->render('login.twig', ['title' =>  $site_name . ' - ' . $page_name ]);
+}
+
+
 
 
 
