@@ -111,7 +111,7 @@ $admin_password = password_hash($admin_password, PASSWORD_DEFAULT);
              title VARCHAR( 50 ) NOT NULL,
              decription VARCHAR( 250 ) NOT NULL,
              type INT( 2 ) NOT NULL,
-             level INT( 2 ) NOT NULL,
+             levels VARCHAR ( 120 ) NOT NULL,
              streak INT( 5 ) NOT NULL,
              lastsuccess TIMESTAMP NOT NULL);" ;
         $db->exec($sql);

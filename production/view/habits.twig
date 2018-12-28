@@ -9,3 +9,46 @@
      --><a href="/?logout=1" class="navitem right">Logout</a><!--
 --></nav>
 {% endblock %}
+
+{% block main %}
+    <div class="newhabit">
+        <form id="new_habit_form">
+            <label for="title">Title:</label>
+            <input type="text" name="title" maxlength="50">
+            <div class="errorbox" id="title_error">This is a error</div>
+            <br />
+
+            <label for="description">Description:</label>
+            <textarea name="description" id="" cols="30" rows="10" maxlength="250"></textarea>
+            <div class="errorbox" id="description_error">This is a error</div>
+            <br />
+
+            {#
+            <label for="type">Type:</label>
+            <select name="type">
+                <option value="1"></option>
+            </select>
+            <br />
+            #}
+
+            <div class="levels">
+                <div class="level">
+                    <h3>Level 1</h3>
+                    <label for="level_1_amount">Amount:</label>
+                    <input type="number" name="level_1_amount">
+                    <div class="errorbox" id="level_1_amount_error">This is a error</div>
+                    <br>
+                    <label for="level_1_points">Points:</label>
+                    <input type="number" name="level_1_points">
+                    <div class="errorbox" id="level_1_points_error">This is a error</div>
+                </div>
+                <button id="add_new_habit_level" type="button">Add Level</button>
+            </div>
+            <br />
+
+            <div class="errorbox" id="db_error">This is a error</div>
+            <input type="hidden" name="form_type" value="add">
+            <button id="submit_habit" type="submit">Submit</button>
+        </form>
+    </div>
+{% endblock %}

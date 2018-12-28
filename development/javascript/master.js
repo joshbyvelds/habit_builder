@@ -1,7 +1,39 @@
 (function($){
+    var currentHabitLevel = 1;
+    // Habit Functions..
+
+    function addHabitLevel(){
+        currentHabitLevel += 1;
+        $("#new_habit_form .levels button").before('<div class="level"><h3>Level '+ currentHabitLevel +'</h3><label for="level_'+ currentHabitLevel +'_amount">Amount:</label><input type="number" name="level_'+ currentHabitLevel +'_amount"><br /><label for="level_'+ currentHabitLevel +'_points">Points:</label><input type="number" name="level_'+ currentHabitLevel +'_points"></div>');
+    }
+
+    function setupHabits(){
+        $("#add_new_habit_level").on('click', addHabitLevel);
+        $( "#new_habit_form" ).submit(function( event ) {
+            event.preventDefault();
+            $('.errorbox').hide();
+            $.post("php/habits.php", $( this ).serialize(), function(json_return){
+                json_return = JSON.parse(json_return);
+
+                if(json_return.error){
+                    if(json_return.title_error){$("#title_error").html(json_return.title_error).slideDown();}
+                    if(json_return.description_error){$("#description_error").html(json_return.description_error).slideDown();}
+                    if(json_return.db_error){$("#db_error").html(json_return.db_error).slideDown();}
+
+                    if(json_return.level_errors) {
+                        json_return.level_errors.forEach(function (element) {
+                            console.log(element);
+                        });
+                    }
+
+                }else{
+                    window.location.reload();
+                }
+            });
+        });
+    }
 
     // Login functions
-
     function setupLogin(){
         $( "#login_form" ).submit(function( event ) {
             event.preventDefault();
@@ -43,6 +75,7 @@
     }
 
     function init(){
+        setupHabits();
         setupDBInstall();
         setupLogin();
     }
