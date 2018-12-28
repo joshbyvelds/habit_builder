@@ -21,7 +21,7 @@ if(!file_exists ( 'php/db.inc.php' )) {
 
 // If Logout page..
 session_start();
-if(isset($_GET["page"]) && $_GET["page"] === "logout"){
+if(isset($_GET["logout"]) && $_GET["logout"] === "1"){
     session_unset();
     session_destroy();
     session_write_close();
@@ -31,7 +31,7 @@ if(isset($_GET["page"]) && $_GET["page"] === "logout"){
 // Check if user is logged in..
 
 if(isset($_SESSION['username'])){
-
+    echo $twig->render('game.twig', ['title' =>  $site_name]);
 }else{
     $page_name = 'Login';
     echo $twig->render('login.twig', ['title' =>  $site_name . ' - ' . $page_name ]);
