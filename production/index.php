@@ -31,7 +31,19 @@ if(isset($_GET["logout"]) && $_GET["logout"] === "1"){
 // Check if user is logged in..
 
 if(isset($_SESSION['username'])){
-    echo $twig->render('game.twig', ['title' =>  $site_name]);
+
+    // check which internal page to load..
+    if(isset($_GET["page"]) && $_GET["page"] === "habits"){
+        $page_name = 'Habits';
+        echo $twig->render('habits.twig', ['title' =>  $site_name  . ' - ' . $page_name]);
+
+    }else if(isset($_GET["page"]) && $_GET["page"] === "settings"){
+        $page_name = 'Settings';
+        echo $twig->render('settings.twig', ['title' =>  $site_name  . ' - ' . $page_name]);
+
+    }else{
+        echo $twig->render('game.twig', ['title' =>  $site_name]);
+    }
 }else{
     $page_name = 'Login';
     echo $twig->render('login.twig', ['title' =>  $site_name . ' - ' . $page_name ]);
