@@ -4,6 +4,7 @@
 
     function addHabitLevel(){
         currentHabitLevel += 1;
+        $("#levels_amount").val(currentHabitLevel);
         $("#new_habit_form .levels button").before('<div class="level"><h3>Level '+ currentHabitLevel +'</h3><label for="level_'+ currentHabitLevel +'_amount">Amount:</label><input type="number" name="level_'+ currentHabitLevel +'_amount"><div class="errorbox" id="level_'+ currentHabitLevel +'_amount_error">This is a error</div><br /><label for="level_'+ currentHabitLevel +'_unlocks">Unlocks at # points:</label><input type="number" name="level_'+ currentHabitLevel +'_unlocks"><div class="errorbox" id="level_'+ currentHabitLevel +'_unlocks_error">This is a error</div><br /><label for="level_'+ currentHabitLevel +'_points">Points per day:</label><input type="number" name="level_'+ currentHabitLevel +'_points"><div class="errorbox" id="level_'+ currentHabitLevel +'_points_error">This is a error</div></div>');
     }
 
@@ -20,10 +21,11 @@
                     if(json_return.description_error){$("#description_error").html(json_return.description_error).slideDown();}
                     if(json_return.db_error){$("#db_error").html(json_return.db_error).slideDown();}
 
-                    if(json_return.level_errors) {
-                        json_return.level_errors.forEach(function (element) {
-                            console.log(element);
-                        });
+                    for(var i = 1; i <= currentHabitLevel; i++){
+                        console.log("Test");
+                        if(json_return['level_' + i + '_amount_error']){$("#level_"+ i + "_amount_error").html(json_return['level_' + i + '_amount_error']).slideDown();}
+                        if(json_return['level_' + i + '_points_error']){$("#level_"+ i + "_points_error").html(json_return['level_' + i + '_points_error']).slideDown();}
+                        if(json_return['level_' + i + '_unlocks_error']){$("#level_"+ i + "_unlocks_error").html(json_return['level_' + i + '_unlocks_error']).slideDown();}
                     }
 
                 }else{
