@@ -4,7 +4,7 @@
 
     function addHabitLevel(){
         currentHabitLevel += 1;
-        $("#new_habit_form .levels button").before('<div class="level"><h3>Level '+ currentHabitLevel +'</h3><label for="level_'+ currentHabitLevel +'_amount">Amount:</label><input type="number" name="level_'+ currentHabitLevel +'_amount"><br /><label for="level_'+ currentHabitLevel +'_points">Points:</label><input type="number" name="level_'+ currentHabitLevel +'_points"></div>');
+        $("#new_habit_form .levels button").before('<div class="level"><h3>Level '+ currentHabitLevel +'</h3><label for="level_'+ currentHabitLevel +'_amount">Amount:</label><input type="number" name="level_'+ currentHabitLevel +'_amount"><div class="errorbox" id="level_'+ currentHabitLevel +'_amount_error">This is a error</div><br /><label for="level_'+ currentHabitLevel +'_unlocks">Unlocks at # points:</label><input type="number" name="level_'+ currentHabitLevel +'_unlocks"><div class="errorbox" id="level_'+ currentHabitLevel +'_unlocks_error">This is a error</div><br /><label for="level_'+ currentHabitLevel +'_points">Points per day:</label><input type="number" name="level_'+ currentHabitLevel +'_points"><div class="errorbox" id="level_'+ currentHabitLevel +'_points_error">This is a error</div></div>');
     }
 
     function setupHabits(){
