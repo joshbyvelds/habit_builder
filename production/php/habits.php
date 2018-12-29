@@ -128,5 +128,7 @@ if($type === 'add'){
     $stmt->bindParam(9, $time);
     $stmt->execute();
 
+    echo json_encode($json);
+    exit();
 }
 
