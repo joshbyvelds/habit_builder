@@ -11,6 +11,30 @@
 {% endblock %}
 
 {% block main %}
+
+    <div class="current_habits">
+        {% for habit in habits %}
+            <div class="habit">
+                <h2>{{ habit.title }}</h2>
+                <div class="description">{{ habit.description }}</div>
+                <button class="pass_btn">Pass</button>
+                <button class="fail_btn">Fail</button>
+
+                {% set levels = habit.level_amounts|split('|') %}
+                {% set level = levels[habit.level - 1] %}
+
+                <div class="level">
+                    {% set level_amounts = level|split('-') %}
+                    Points Earned: {{ habit.points }} <br />
+                    Current Streak: {{ habit.streak }} <br />
+                    Current Fails: {{ habit.fails }} <br />
+                    Points on Next Pass: {{ level_amounts[1] }} <br />
+                    Last Pass: {{ habit.lastsuccess }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
     <div class="newhabit">
         <form id="new_habit_form">
             <label for="title">Title:</label>
@@ -23,6 +47,7 @@
             <div class="errorbox" id="description_error">This is a error</div>
             <br />
 
+            {# TODO:: Daily, Weekly, Monthly #}
             {#
             <label for="type">Type:</label>
             <select name="type">

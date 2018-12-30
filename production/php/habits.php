@@ -105,6 +105,7 @@ if($type === 'add'){
     $streak = 0;
     $fail = 0;
     $level = 1;
+    $points = 0;
     $time = date('Y-m-d G:i:s');
 
 
@@ -117,7 +118,7 @@ if($type === 'add'){
     }
     $level_amounts = substr($level_amounts, 1);
 
-    $stmt = $db->prepare("INSERT INTO habits (user, verify, title, description, type, level, level_amounts, streak, lastsuccess) VALUES (?, ?, ?, ?, ?, ?, ? ,?, ?)");
+    $stmt = $db->prepare("INSERT INTO habits (user, verify, title, description, type, level, level_amounts, points, streak, fails, lastsuccess) VALUES (?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?)");
     $stmt->bindParam(1, $user_id);
     $stmt->bindParam(2, $verified_by);
     $stmt->bindParam(3, $title);
@@ -125,9 +126,10 @@ if($type === 'add'){
     $stmt->bindParam(5, $type);
     $stmt->bindParam(6, $level);
     $stmt->bindParam(7, $level_amounts);
-    $stmt->bindParam(8, $streak);
-    $stmt->bindParam(9, $fail);
-    $stmt->bindParam(9, $time);
+    $stmt->BindParam(8, $points);
+    $stmt->bindParam(9, $streak);
+    $stmt->bindParam(10, $fail);
+    $stmt->bindParam(11, $time);
     $stmt->execute();
 
     echo json_encode($json);

@@ -31,11 +31,18 @@ if(isset($_GET["logout"]) && $_GET["logout"] === "1"){
 // Check if user is logged in..
 
 if(isset($_SESSION['username'])){
+    require_once 'php/db.inc.php';
 
     // check which internal page to load..
     if(isset($_GET["page"]) && $_GET["page"] === "habits"){
+        $user_id = $_SESSION['user_id'];
+        $result = $db->prepare("SELECT * FROM habits WHERE user = ?");
+        $result->bindParam(1, $user_id);
+        $result->execute();
+        $user_habits = $result->fetchAll(PDO::FETCH_ASSOC);
+
         $page_name = 'Habits';
-        echo $twig->render('habits.twig', ['title' =>  $site_name  . ' - ' . $page_name]);
+        echo $twig->render('habits.twig', ['title' =>  $site_name  . ' - ' . $page_name, 'habits' => $user_habits]);
 
     }else if(isset($_GET["page"]) && $_GET["page"] === "settings"){
         $page_name = 'Settings';
