@@ -103,6 +103,7 @@ if($type === 'add'){
     $verified_by = 1;
     $type = 1;
     $streak = 0;
+    $fail = 0;
     $level = 1;
     $time = date('Y-m-d G:i:s');
 
@@ -125,6 +126,7 @@ if($type === 'add'){
     $stmt->bindParam(6, $level);
     $stmt->bindParam(7, $level_amounts);
     $stmt->bindParam(8, $streak);
+    $stmt->bindParam(9, $fail);
     $stmt->bindParam(9, $time);
     $stmt->execute();
 
