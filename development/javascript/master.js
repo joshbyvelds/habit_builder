@@ -22,6 +22,16 @@
             $("#habit_" + habit_id + " .streak").html(json_return.streak);
             $("#habit_" + habit_id + " .next").html(json_return.next);
             $("#habit_" + habit_id + " .last").html(json_return.last);
+
+            if(json_return.percent){
+                $("#habit_" + habit_id + " .percent").show().html(json_return.percent);
+            }else{
+                $("#habit_" + habit_id + " .percent").hide();
+            }
+
+            if(json_return.level_update){
+                alert("Yay, Habit Level Updated.");
+            }
         });
     }
 

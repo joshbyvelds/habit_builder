@@ -100,6 +100,7 @@ $admin_password = password_hash($admin_password, PASSWORD_DEFAULT);
              id INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
              username VARCHAR( 50 ) NOT NULL,
              password VARCHAR( 250 ) NOT NULL,
+             points DECIMAL (50 , 4) NOT NULL,
              role INT( 2 ) NOT NULL);" ;
         $db->exec($sql);
 

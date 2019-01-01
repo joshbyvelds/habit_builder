@@ -139,8 +139,19 @@ if($type === 'add'){
 }
 
 if($type === 'pass'){
+
+    session_start();
+    if(isset($_SESSION['user_id'])){
+        $user_id = $_SESSION['user_id'];
+    }
+
     if(isset($_POST['id'])){
         $habit_id = $_POST['id'];
+    }
+
+    if(empty($user_id)){
+        $json['error'] = true;
+        $json['habit_error'] = "Missing user id..";
     }
 
     if(empty($habit_id)){
@@ -166,22 +177,32 @@ if($type === 'pass'){
     $precision = 4;
 
     $points_base = explode("-", explode("|", $habit['level_amounts'])[(int)$habit['level'] - 1])[1];
-    $points_earned = round(pow($points_base + 0.01, $habit['streak'] / 10), $precision, $mode);
-    $points_next = round(pow($points_base + 0.01, ($habit['streak'] + 1) / 10), $precision, $mode);
+    $points_earned = round(pow($points_base + 0.01, ($habit['streak'] + 1) / 10), $precision, $mode);
+    $points_next = round(pow($points_base + 0.01, ($habit['streak'] + 2) / 10), $precision, $mode);
 
     $level = $habit['level'];
+    $points = $habit['points'] + $points_earned;
+
+    $percent = false;
+
+    // Check if next level has been reached..
     if(count(explode("|", $habit['level_amounts'])) > $level){
-        if($habit['points'] >=  explode("-", explode("|", $habit['level_amounts'])[(int)$habit['level'] - 1])[2]){
+        $percent = round(($points / (int)explode("-", explode("|", $habit['level_amounts'])[$level])[2]) * 100, 0, PHP_ROUND_HALF_DOWN);
+
+        if($points >= (int)explode("-", explode("|", $habit['level_amounts'])[$level])[2]){
+            $json['level_update'] = true;
             $level += 1;
             $points_base = explode("-", explode("|", $habit['level_amounts'])[(int)$habit['level']])[1];
-            $points_next = round(pow($points_base + 0.01, ($habit['streak'] + 1) / 10), $precision, $mode);
+            $points_next = round(pow($points_base + 0.01, ($habit['streak'] + 2) / 10), $precision, $mode);
+            if(count(explode("|", $habit['level_amounts'])) > $level) {
+                $percent = round(($points / (int)explode("-", explode("|", $habit['level_amounts'])[$level])[2]) * 100, 0, PHP_ROUND_HALF_DOWN);
+            }else{
+                $percent = false;
+            }
         }
     }
 
-
-
-    $points_earned =  $habit['points'] + $points_earned;
-
+    // Update Habits Table..
     $stmt = $db->prepare("UPDATE habits SET level = ?, streak = streak + 1, points = points + ?, lastsuccess = ? WHERE id = ?");
     $stmt->bindParam(1, $level);
     $stmt->bindParam(2, $points_earned);
@@ -189,10 +210,17 @@ if($type === 'pass'){
     $stmt->bindParam(4, $habit_id);
     $stmt->execute();
 
-    $json['points'] = round($points_earned, 2, PHP_ROUND_HALF_DOWN);
+    // Update Users Table
+    $stmt2 = $db->prepare("UPDATE users SET points = points + ? WHERE id = ?");
+    $stmt2->bindParam(1, $points_earned);
+    $stmt2->bindParam(2, $user_id);
+    $stmt2->execute();
+
+    $json['points'] = round($points, 2, PHP_ROUND_HALF_DOWN);
     $json['streak'] = $habit['streak'] + 1;
     $json['next'] = $points_next;
     $json['last'] = $time;
+    $json['percent'] = $percent;
 
     echo json_encode($json);
     exit();
