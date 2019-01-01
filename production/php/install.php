@@ -113,7 +113,7 @@ $admin_password = password_hash($admin_password, PASSWORD_DEFAULT);
              type INT( 2 ) NOT NULL,
              level INT ( 2 ) NOT NULL,
              level_amounts VARCHAR ( 120 ) NOT NULL,
-             points int(9) NOT NULL,
+             points DECIMAL ( 50,4 ) NOT NULL,
              streak INT( 5 ) NOT NULL,
              fails INT (2) NOT NULL,
              lastsuccess TIMESTAMP NOT NULL);" ;

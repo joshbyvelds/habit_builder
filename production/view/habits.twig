@@ -14,7 +14,7 @@
 
     <div class="current_habits" id="current_habits">
         {% for habit in habits %}
-            <div class="habit">
+            <div class="habit" id="habit_{{ habit.id }}">
                 <h2>{{ habit.title }}</h2>
                 <div class="description">{{ habit.description }}</div>
                 <button class="pass_btn" data-habit-id="{{ habit.id }}">Pass</button>
@@ -27,11 +27,11 @@
 
                 <div class="level">
                     {% set level_amounts = level|split('-') %}
-                    Points Earned: {{ habit.points }} <br />
-                    Current Streak: {{ habit.streak }} <br />
-                    Current Fails: {{ habit.fails }} <br />
-                    Points on Next Pass: {{ level_amounts[1] }} <br />
-                    Last Pass: {{ habit.lastsuccess }}
+                    Points Earned: <span class="points">{{ habit.points|number_format(2, '.', ',')  }}</span> <br />
+                    Current Streak: <span class="streak">{{ habit.streak }}</span> <br />
+                    Current Fails: <span class="fails">{{ habit.fails }}</span> <br />
+                    Points on Next Pass: <span class="next">{{ level_amounts[1] }}</span> <br />
+                    Last Pass: <span class="last">{{ habit.lastsuccess }}</span>
                 </div>
             </div>
         {% endfor %}

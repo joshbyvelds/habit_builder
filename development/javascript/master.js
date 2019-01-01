@@ -10,23 +10,34 @@
 
     function passHabit($btn){
         // Update DB
-        $.post('php/habits', {'form_type':'pass', 'id':$btn.data('habit-id')}, function(json_return){
+        var habit_id = $btn.data('habit-id');
+        $.post('php/habits', {'form_type':'pass', 'id':habit_id}, function(json_return){
             json_return = JSON.parse(json_return);
 
             if(json_return.error){
                 $("#habit_error").hide().html(json_return.habit_error).slideDown();
             }
+
+            $("#habit_" + habit_id + " .points").html(json_return.points);
+            $("#habit_" + habit_id + " .streak").html(json_return.streak);
+            $("#habit_" + habit_id + " .next").html(json_return.next);
+            $("#habit_" + habit_id + " .last").html(json_return.last);
         });
     }
 
     function failHabit($btn){
         // Update DB
-        $.post('php/habits', {'form_type':'fail', 'id':$btn.data('habit-id')}, function(json_return){
+        var habit_id = $btn.data('habit-id');
+        $.post('php/habits', {'form_type':'fail', 'id':habit_id}, function(json_return){
             json_return = JSON.parse(json_return);
 
             if(json_return.error){
                 $("#habit_error").hide().html(json_return.habit_error).slideDown();
             }
+
+            $("#habit_" + habit_id + " .streak").html(0);
+            $("#habit_" + habit_id + " .next").html(json_return.next);
+            $("#habit_" + habit_id + " .fails").html(parseInt($("#habit_" + habit_id + " .fails").html()) + 1);
         });
     }
 

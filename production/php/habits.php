@@ -9,6 +9,8 @@
 $json = [];
 $json['error'] = false;
 
+date_default_timezone_set('America/Toronto');
+
 if(isset($_POST['form_type'])){
     $type = $_POST['form_type'];
 }
@@ -150,6 +152,50 @@ if($type === 'pass'){
         echo json_encode($json);
         exit();
     }
+
+    include 'db.inc.php';
+
+    $time = date('Y-m-d G:i:s');
+
+    $result = $db->prepare("SELECT level_amounts, level, streak, points FROM habits WHERE id = ?");
+    $result->bindParam(1, $habit_id);
+    $result->execute();
+    $habit = $result->fetchAll(PDO::FETCH_ASSOC)[0];
+
+    $mode = PHP_ROUND_HALF_EVEN;
+    $precision = 4;
+
+    $points_base = explode("-", explode("|", $habit['level_amounts'])[(int)$habit['level'] - 1])[1];
+    $points_earned = round(pow($points_base + 0.01, $habit['streak'] / 10), $precision, $mode);
+    $points_next = round(pow($points_base + 0.01, ($habit['streak'] + 1) / 10), $precision, $mode);
+
+    $level = $habit['level'];
+    if(count(explode("|", $habit['level_amounts'])) > $level){
+        if($habit['points'] >=  explode("-", explode("|", $habit['level_amounts'])[(int)$habit['level'] - 1])[2]){
+            $level += 1;
+            $points_base = explode("-", explode("|", $habit['level_amounts'])[(int)$habit['level']])[1];
+            $points_next = round(pow($points_base + 0.01, ($habit['streak'] + 1) / 10), $precision, $mode);
+        }
+    }
+
+
+
+    $points_earned =  $habit['points'] + $points_earned;
+
+    $stmt = $db->prepare("UPDATE habits SET level = ?, streak = streak + 1, points = points + ?, lastsuccess = ? WHERE id = ?");
+    $stmt->bindParam(1, $level);
+    $stmt->bindParam(2, $points_earned);
+    $stmt->bindParam(3, $time);
+    $stmt->bindParam(4, $habit_id);
+    $stmt->execute();
+
+    $json['points'] = round($points_earned, 2, PHP_ROUND_HALF_DOWN);
+    $json['streak'] = $habit['streak'] + 1;
+    $json['next'] = $points_next;
+    $json['last'] = $time;
+
+    echo json_encode($json);
+    exit();
 }
 
 if($type === 'fail'){
@@ -166,5 +212,28 @@ if($type === 'fail'){
         echo json_encode($json);
         exit();
     }
+
+    include 'db.inc.php';
+
+    $result = $db->prepare("SELECT level_amounts, level, streak, points FROM habits WHERE id = ?");
+    $result->bindParam(1, $habit_id);
+    $result->execute();
+    $habit = $result->fetchAll(PDO::FETCH_ASSOC)[0];
+
+    $mode = PHP_ROUND_HALF_EVEN;
+    $precision = 4;
+
+    $points_base = explode("-", explode("|", $habit['level_amounts'])[(int)$habit['level'] - 1])[1];
+    $points_earned = round(pow($points_base + 0.01, $habit['streak'] / 10), $precision, $mode);
+    $points_next = round(pow($points_base + 0.01, (0 + 1) / 10), $precision, $mode);
+
+    $stmt = $db->prepare("UPDATE habits SET streak = 0, fails = fails + 1 WHERE id = ?");
+    $stmt->bindParam(1, $habit_id);
+    $stmt->execute();
+
+    $json['next'] = $points_next;
+
+    echo json_encode($json);
+    exit();
 }
 
