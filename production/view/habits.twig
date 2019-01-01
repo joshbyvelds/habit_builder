@@ -12,13 +12,15 @@
 
 {% block main %}
 
-    <div class="current_habits">
+    <div class="current_habits" id="current_habits">
         {% for habit in habits %}
             <div class="habit">
                 <h2>{{ habit.title }}</h2>
                 <div class="description">{{ habit.description }}</div>
-                <button class="pass_btn">Pass</button>
-                <button class="fail_btn">Fail</button>
+                <button class="pass_btn" data-habit-id="{{ habit.id }}">Pass</button>
+                <button class="fail_btn" data-habit-id="{{ habit.id }}">Fail</button>
+
+                <div class="errorbox" id="habit_error"></div>
 
                 {% set levels = habit.level_amounts|split('|') %}
                 {% set level = levels[habit.level - 1] %}

@@ -81,6 +81,15 @@ nav {
         background: #FFF;
         color: #000; }
 
+.current_habits .habit {
+  padding-top: 10px;
+  padding-bottom: 9px;
+  border-bottom: solid 1px black; }
+  .current_habits .habit h2 {
+    padding-bottom: 10px;
+    font-size: 30px;
+    font-weight: bold; }
+
 footer {
   border-top: dotted 1px black;
   padding-top: 30px;

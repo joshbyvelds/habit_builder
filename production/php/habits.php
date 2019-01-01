@@ -136,3 +136,35 @@ if($type === 'add'){
     exit();
 }
 
+if($type === 'pass'){
+    if(isset($_POST['id'])){
+        $habit_id = $_POST['id'];
+    }
+
+    if(empty($habit_id)){
+        $json['error'] = true;
+        $json['habit_error'] = "Missing habit ID..";
+    }
+
+    if($json['error']){
+        echo json_encode($json);
+        exit();
+    }
+}
+
+if($type === 'fail'){
+    if(isset($_POST['id'])){
+        $habit_id = $_POST['id'];
+    }
+
+    if(empty($habit_id)){
+        $json['error'] = true;
+        $json['habit_error'] = "Missing habit ID..";
+    }
+
+    if($json['error']){
+        echo json_encode($json);
+        exit();
+    }
+}
+

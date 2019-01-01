@@ -8,8 +8,32 @@
         $("#new_habit_form .levels button").before('<div class="level"><h3>Level '+ currentHabitLevel +'</h3><label for="level_'+ currentHabitLevel +'_amount">Amount:</label><input type="number" name="level_'+ currentHabitLevel +'_amount" min="1"><div class="errorbox" id="level_'+ currentHabitLevel +'_amount_error">This is a error</div><br /><label for="level_'+ currentHabitLevel +'_points">Points per day:</label><input type="number" name="level_'+ currentHabitLevel +'_points" min="1"><div class="errorbox" id="level_'+ currentHabitLevel +'_points_error">This is a error</div><br /><label for="level_'+ currentHabitLevel +'_unlocks">Unlocks at # points:</label><input type="number" name="level_'+ currentHabitLevel +'_unlocks" min="1"><div class="errorbox" id="level_'+ currentHabitLevel +'_unlocks_error">This is a error</div><br /></div>');
     }
 
+    function passHabit($btn){
+        // Update DB
+        $.post('php/habits', {'form_type':'pass', 'id':$btn.data('habit-id')}, function(json_return){
+            json_return = JSON.parse(json_return);
+
+            if(json_return.error){
+                $("#habit_error").hide().html(json_return.habit_error).slideDown();
+            }
+        });
+    }
+
+    function failHabit($btn){
+        // Update DB
+        $.post('php/habits', {'form_type':'fail', 'id':$btn.data('habit-id')}, function(json_return){
+            json_return = JSON.parse(json_return);
+
+            if(json_return.error){
+                $("#habit_error").hide().html(json_return.habit_error).slideDown();
+            }
+        });
+    }
+
     function setupHabits(){
         $("#add_new_habit_level").on('click', addHabitLevel);
+        $("#current_habits .pass_btn").on('click', function(){passHabit($(this));});
+        $("#current_habits .fail_btn").on('click', function(){failHabit($(this));});
         $( "#new_habit_form" ).submit(function( event ) {
             event.preventDefault();
             $('.errorbox').hide();
