@@ -14,19 +14,20 @@
 
     <div class="current_habits" id="current_habits">
         {% for habit in habits %}
+            {% set levels = habit.level_amounts|split('|') %}
+            {% set level = levels[habit.level - 1] %}
+            {% set level_amounts = level|split('-') %}
+
             <div class="habit" id="habit_{{ habit.id }}">
                 <h2>{{ habit.title }}</h2>
-                <div class="description">{{ habit.description|raw }}</div>
+                <div class="description">{{ habit.description|replace({'--amount--': level_amounts[0]})|raw }}</div>
                 <button class="pass_btn" data-habit-id="{{ habit.id }}">Pass</button>
                 <button class="fail_btn" data-habit-id="{{ habit.id }}">Fail</button>
 
                 <div class="errorbox" id="habit_error"></div>
 
-                {% set levels = habit.level_amounts|split('|') %}
-                {% set level = levels[habit.level - 1] %}
-
                 <div class="level">
-                    {% set level_amounts = level|split('-') %}
+
                     Points Earned: <span class="points">{{ habit.points|number_format(2, '.', ',')  }}</span> <br />
                     Current Streak: <span class="streak">{{ habit.streak }}</span> <br />
                     Current Fails: <span class="fails">{{ habit.fails }}</span> <br />
