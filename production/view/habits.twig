@@ -16,7 +16,7 @@
         {% for habit in habits %}
             <div class="habit" id="habit_{{ habit.id }}">
                 <h2>{{ habit.title }}</h2>
-                <div class="description">{{ habit.description }}</div>
+                <div class="description">{{ habit.description|raw }}</div>
                 <button class="pass_btn" data-habit-id="{{ habit.id }}">Pass</button>
                 <button class="fail_btn" data-habit-id="{{ habit.id }}">Fail</button>
 
