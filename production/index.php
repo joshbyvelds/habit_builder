@@ -41,6 +41,11 @@ if(isset($_SESSION['username'])){
         $result->execute();
         $user_habits = $result->fetchAll(PDO::FETCH_ASSOC);
 
+        foreach ($user_habits as &$habit){
+            if(count(explode("|", $habit['level_amounts'])) > $habit['level']) {
+                $habit['percent'] = round(($habit['points'] / (int)explode("-", explode("|", $habit['level_amounts'])[$habit['level']])[2]) * 100, 0, PHP_ROUND_HALF_DOWN);
+            }
+        }
         $page_name = 'Habits';
         echo $twig->render('habits.twig', ['title' =>  $site_name  . ' - ' . $page_name, 'habits' => $user_habits]);
 

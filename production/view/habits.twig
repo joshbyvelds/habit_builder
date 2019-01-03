@@ -33,7 +33,7 @@
                     Current Fails: <span class="fails">{{ habit.fails }}</span> <br />
                     Points on Next Pass: <span class="next">{{ level_amounts[1] }}</span> <br />
                     Last Pass: <span class="last">{{ habit.lastsuccess }}</span> <br />
-                    Percent: <span class="percent">{{ habit.percent }}</span>
+                    {% if habit.percent %}Percent: <span class="percent">{{ habit.percent }}%</span>{% endif %}
                 </div>
             </div>
         {% endfor %}
