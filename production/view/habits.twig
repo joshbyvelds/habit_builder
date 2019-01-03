@@ -27,11 +27,10 @@
                 <div class="errorbox" id="habit_error"></div>
 
                 <div class="level">
-
                     Points Earned: <span class="points">{{ habit.points|number_format(2, '.', ',')  }}</span> <br />
                     Current Streak: <span class="streak">{{ habit.streak }}</span> <br />
                     Current Fails: <span class="fails">{{ habit.fails }}</span> <br />
-                    Points on Next Pass: <span class="next">{{ level_amounts[1] }}</span> <br />
+                    Points on Next Pass: <span class="next">{{ habit.next }}</span> <br />
                     Last Pass: <span class="last">{{ habit.lastsuccess }}</span> <br />
                     {% if habit.percent %}Percent: <span class="percent">{{ habit.percent }}%</span>{% endif %}
                 </div>

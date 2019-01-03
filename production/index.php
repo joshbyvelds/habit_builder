@@ -41,7 +41,14 @@ if(isset($_SESSION['username'])){
         $result->execute();
         $user_habits = $result->fetchAll(PDO::FETCH_ASSOC);
 
+        $mode = PHP_ROUND_HALF_EVEN;
+        $precision = 4;
+
         foreach ($user_habits as &$habit){
+            $points_base = explode("-", explode("|", $habit['level_amounts'])[(int)$habit['level'] - 1])[1];
+            $points_next = round(pow($points_base + 0.01, ($habit['streak'] + 2) / 10), $precision, $mode);
+            $habit['next'] = $points_next;
+
             if(count(explode("|", $habit['level_amounts'])) > $habit['level']) {
                 $habit['percent'] = round(($habit['points'] / (int)explode("-", explode("|", $habit['level_amounts'])[$habit['level']])[2]) * 100, 0, PHP_ROUND_HALF_DOWN);
             }
