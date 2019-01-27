@@ -36,7 +36,7 @@ if(isset($_SESSION['username'])){
     // check which internal page to load..
     if(isset($_GET["page"]) && $_GET["page"] === "habits"){
         $user_id = $_SESSION['user_id'];
-        $result = $db->prepare("SELECT * FROM habits WHERE user = ?");
+        $result = $db->prepare("SELECT * FROM habits WHERE user = ? AND enabled = 1");
         $result->bindParam(1, $user_id);
         $result->execute();
         $user_habits = $result->fetchAll(PDO::FETCH_ASSOC);

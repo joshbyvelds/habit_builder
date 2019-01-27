@@ -107,6 +107,7 @@ $admin_password = password_hash($admin_password, PASSWORD_DEFAULT);
         // Habits..
         $sql ="CREATE table habits(
              id INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
+             enabled INT (1) NOT NULL,
              user INT( 11 ) NOT NULL,
              verify INT( 11 ) NOT NULL,
              title VARCHAR( 50 ) NOT NULL,

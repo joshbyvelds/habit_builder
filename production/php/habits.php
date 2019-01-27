@@ -120,7 +120,7 @@ if($type === 'add'){
     }
     $level_amounts = substr($level_amounts, 1);
 
-    $stmt = $db->prepare("INSERT INTO habits (user, verify, title, description, type, level, level_amounts, points, streak, fails, lastsuccess) VALUES (?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?)");
+    $stmt = $db->prepare("INSERT INTO habits (enabled, user, verify, title, description, type, level, level_amounts, points, streak, fails, lastsuccess) VALUES (1, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?)");
     $stmt->bindParam(1, $user_id);
     $stmt->bindParam(2, $verified_by);
     $stmt->bindParam(3, $title);
@@ -203,7 +203,7 @@ if($type === 'pass'){
     }
 
     // Update Habits Table..
-    $stmt = $db->prepare("UPDATE habits SET level = ?, streak = streak + 1, points = points + ?, lastsuccess = ? WHERE id = ?");
+    $stmt = $db->prepare("UPDATE habits SET level = ?, streak = streak + 1, points = points + ?, lastsuccess = ?, WHERE id = ?");
     $stmt->bindParam(1, $level);
     $stmt->bindParam(2, $points_earned);
     $stmt->bindParam(3, $time);
