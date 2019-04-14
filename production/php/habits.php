@@ -40,6 +40,16 @@ if($type === 'add'){
         $description = $_POST['description'];
     }
 
+    /*
+    if(isset($_POST['type'])){
+        $habit_type = $_POST['type'];
+    }
+    */
+
+    if(isset($_POST['time'])){
+        $habit_time = $_POST['time'];
+    }
+
     if(isset($_POST['levels'])){
         $levels = $_POST['levels'];
     }
@@ -53,6 +63,13 @@ if($type === 'add'){
         $json['error'] = true;
         $json['title_error'] = "Please add a title for your new habit.";
     }
+
+    /*
+    if(empty($habit_type)){
+        $json['error'] = true;
+        $json['type_error'] = "Please select a type for your new habit.";
+    }
+    */
 
     if(empty($description)){
         $json['error'] = true;
@@ -79,7 +96,11 @@ if($type === 'add'){
 
         if(empty(${'level_' . $i . '_amount'})){
             $json['error'] = true;
-            $json['level_' . $i . '_amount_error'] = "Please enter the amount of times you have to complete this habit at this level to pass.";
+            if($habit_type === 2) {
+                $json['level_' . $i . '_amount_error'] = "Please enter the amount of time in minutes you have to do this habit at this level to pass.";
+            }else{
+                $json['level_' . $i . '_amount_error'] = "Please enter the amount of times you have to complete this habit at this level to pass.";
+            }
         }
 
         if(empty(${'level_' . $i . '_points'})){
@@ -103,8 +124,8 @@ if($type === 'add'){
 
     //default values..
     $verified_by = 1;
-    $type = 1;
     $streak = 0;
+    $habit_type = 1;
     $fail = 0;
     $level = 1;
     $points = 0;
@@ -125,7 +146,7 @@ if($type === 'add'){
     $stmt->bindParam(2, $verified_by);
     $stmt->bindParam(3, $title);
     $stmt->bindParam(4, $description);
-    $stmt->bindParam(5, $type);
+    $stmt->bindParam(5, $habit_type);
     $stmt->bindParam(6, $level);
     $stmt->bindParam(7, $level_amounts);
     $stmt->BindParam(8, $points);
@@ -177,8 +198,8 @@ if($type === 'pass'){
     $precision = 4;
 
     $points_base = explode("-", explode("|", $habit['level_amounts'])[(int)$habit['level'] - 1])[1];
-    $points_earned = round(pow($points_base + 0.01, ($habit['streak'] + 1) / 10), $precision, $mode);
-    $points_next = round(pow($points_base + 0.01, ($habit['streak'] + 2) / 10), $precision, $mode);
+    $points_earned = $points_base + $habit['streak'];
+    $points_next = $points_base + $habit['streak'] + 1;
 
     $level = $habit['level'];
     $points = $habit['points'] + $points_earned;
@@ -193,7 +214,7 @@ if($type === 'pass'){
             $json['level_update'] = true;
             $level += 1;
             $points_base = explode("-", explode("|", $habit['level_amounts'])[(int)$habit['level']])[1];
-            $points_next = round(pow($points_base + 0.01, ($habit['streak'] + 2) / 10), $precision, $mode);
+            $points_next = $points_base + $habit['streak'] + 1;
             if(count(explode("|", $habit['level_amounts'])) > $level) {
                 $percent = round(($points / (int)explode("-", explode("|", $habit['level_amounts'])[$level])[2]) * 100, 0, PHP_ROUND_HALF_DOWN);
             }else{
@@ -203,7 +224,7 @@ if($type === 'pass'){
     }
 
     // Update Habits Table..
-    $stmt = $db->prepare("UPDATE habits SET level = ?, streak = streak + 1, points = points + ?, lastsuccess = ?, WHERE id = ?");
+    $stmt = $db->prepare("UPDATE habits SET level = ?, streak = streak + 1, points = points + ?, lastsuccess = ? WHERE id = ?");
     $stmt->bindParam(1, $level);
     $stmt->bindParam(2, $points_earned);
     $stmt->bindParam(3, $time);

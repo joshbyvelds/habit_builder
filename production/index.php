@@ -46,11 +46,11 @@ if(isset($_SESSION['username'])){
 
         foreach ($user_habits as &$habit){
             $points_base = explode("-", explode("|", $habit['level_amounts'])[(int)$habit['level'] - 1])[1];
-            $points_next = round(pow($points_base + 0.01, ($habit['streak'] + 2) / 10), $precision, $mode);
+            $points_next = $points_base + $habit['streak'];
             $habit['next'] = $points_next;
 
             if(count(explode("|", $habit['level_amounts'])) > $habit['level']) {
-                $habit['percent'] = round(($habit['points'] / (int)explode("-", explode("|", $habit['level_amounts'])[$habit['level']])[2]) * 100, 0, PHP_ROUND_HALF_DOWN);
+                $habit['percent'] = round(($habit['points'] / (int)explode("-", explode("|", $habit['level_amounts'])[$habit['level']])[2]) * 100, 2, PHP_ROUND_HALF_DOWN);
             }
         }
         $page_name = 'Habits';
