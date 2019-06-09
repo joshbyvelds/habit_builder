@@ -201,7 +201,7 @@ if($type === 'pass'){
     $points_earned = $points_base + $habit['streak'];
     $points_next = $points_base + $habit['streak'] + 1;
 
-    $level = $habit['level'];
+    $level = (int)$habit['level'];
     $points = $habit['points'] + $points_earned;
 
     $percent = false;
@@ -216,7 +216,7 @@ if($type === 'pass'){
             $points_base = explode("-", explode("|", $habit['level_amounts'])[(int)$habit['level']])[1];
             $points_next = $points_base + $habit['streak'] + 1;
             if(count(explode("|", $habit['level_amounts'])) > $level) {
-                $percent = round(($points / (int)explode("-", explode("|", $habit['level_amounts'])[$level])[2]) * 100, 0, PHP_ROUND_HALF_DOWN);
+                $percent = round(($points / (int)explode("-", explode("|", $habit['level_amounts'])[$level - 1])[2]) * 100, 0, PHP_ROUND_HALF_DOWN);
             }else{
                 $percent = false;
             }

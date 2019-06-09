@@ -50,7 +50,7 @@ if(isset($_SESSION['username'])){
             $habit['next'] = $points_next;
 
             if(count(explode("|", $habit['level_amounts'])) > $habit['level']) {
-                $habit['percent'] = round(($habit['points'] / (int)explode("-", explode("|", $habit['level_amounts'])[$habit['level']])[2]) * 100, 2, PHP_ROUND_HALF_DOWN);
+                $habit['percent'] = round(($habit['points'] / (int)explode("-", explode("|", $habit['level_amounts'])[$habit['level'] - 1])[2]) * 100, 2, PHP_ROUND_HALF_DOWN);
             }
         }
         $page_name = 'Habits';
