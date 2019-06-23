@@ -198,8 +198,8 @@ if($type === 'pass'){
     $precision = 4;
 
     $points_base = explode("-", explode("|", $habit['level_amounts'])[(int)$habit['level'] - 1])[1];
-    $points_earned = $points_base + $habit['streak'];
-    $points_next = $points_base + $habit['streak'] + 1;
+    $points_earned = $points_base * $habit['streak'];
+    $points_next = $points_base * ($habit['streak'] + 1);
 
     $level = (int)$habit['level'];
     $points = $habit['points'] + $points_earned;
@@ -208,15 +208,15 @@ if($type === 'pass'){
 
     // Check if next level has been reached..
     if(count(explode("|", $habit['level_amounts'])) > $level){
-        $percent = round(($points / (int)explode("-", explode("|", $habit['level_amounts'])[$level])[2]) * 100, 0, PHP_ROUND_HALF_DOWN);
+        $percent = round(($points / (int)explode("-", explode("|", $habit['level_amounts'])[$level - 1])[2]) * 100, 2, PHP_ROUND_HALF_DOWN);
 
-        if($points >= (int)explode("-", explode("|", $habit['level_amounts'])[$level])[2]){
+        if($points >= (int)explode("-", explode("|", $habit['level_amounts'])[$level - 1])[2]){
             $json['level_update'] = true;
             $level += 1;
             $points_base = explode("-", explode("|", $habit['level_amounts'])[(int)$habit['level']])[1];
             $points_next = $points_base + $habit['streak'] + 1;
             if(count(explode("|", $habit['level_amounts'])) > $level) {
-                $percent = round(($points / (int)explode("-", explode("|", $habit['level_amounts'])[$level - 1])[2]) * 100, 0, PHP_ROUND_HALF_DOWN);
+                $percent = round(($points / (int)explode("-", explode("|", $habit['level_amounts'])[$level - 1])[2]) * 100, 2, PHP_ROUND_HALF_DOWN);
             }else{
                 $percent = false;
             }
@@ -237,11 +237,11 @@ if($type === 'pass'){
     $stmt2->bindParam(2, $user_id);
     $stmt2->execute();
 
-    $json['points'] = round($points, 2, PHP_ROUND_HALF_DOWN);
+    $json['points'] = number_format(round($points, 2, PHP_ROUND_HALF_DOWN), 2);
     $json['streak'] = $habit['streak'] + 1;
     $json['next'] = $points_next;
     $json['last'] = $time;
-    $json['percent'] = $percent;
+    $json['percent'] = number_format($percent, 2);
 
     echo json_encode($json);
     exit();

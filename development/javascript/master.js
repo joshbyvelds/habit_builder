@@ -24,7 +24,7 @@
             $("#habit_" + habit_id + " .last").html(json_return.last);
 
             if(json_return.percent){
-                $("#habit_" + habit_id + " .percent").show().html(json_return.percent);
+                $("#habit_" + habit_id + " .percent").show().html(json_return.percent + "%");
             }else{
                 $("#habit_" + habit_id + " .percent").hide();
             }
